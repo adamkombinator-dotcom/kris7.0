@@ -1,61 +1,95 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Skrypt Python na Stronie WWW</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
+<title>Zegar</title>
+<style>
+body {
+  background-color: navy;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.zegar-kontener {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zegary {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.zegar {
+  text-align: center;
+}
+
+#zegar-polska, #zegar-ny {
+  font-size: 72px;
+  color: white;
+}
+
+.podpis {
+  font-size: 16px;
+  color: #ddd;
+  margin-top: 5px;
+}
+
+#napis {
+  font-size: 48px;
+  color: gold;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+</style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 class="text-2xl font-semibold text-blue-600 mb-4 text-center">Skrypt Python na Stronie WWW</h1>
-        <div id="wynik" class="mb-4 p-4 bg-gray-50 rounded-md border border-gray-200">
-            <p class="text-gray-700">Wynik skryptu Python zostanie wyświetlony tutaj...</p>
-        </div>
-        <button id="uruchomSkrypt" class="bg-green-500 hover:bg-green-700 text-white font-semibold rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-green-400">Uruchom Skrypt Python</button>
+<body>
+
+<div class="zegar-kontener">
+  <div class="zegary">
+    <div class="zegar">
+      <div id="zegar-polska"></div>
+      <div class="podpis">Warszawa</div>
     </div>
+    <div class="zegar">
+      <div id="zegar-ny"></div>
+      <div class="podpis">Nowy Jork</div>
+    </div>
+  </div>
+  <div id="napis">SYGYsoft Wroclaw 2025</div>
+</div>
 
-    <script>
-        document.getElementById("uruchomSkrypt").addEventListener("click", function() {
-            // Symulacja działania skryptu Python (ponieważ nie możemy bezpośrednio uruchomić Pythona w przeglądarce)
-            // W prawdziwej aplikacji, musiałbyś użyć backendu (np. Flask, Django) do wykonania tego kodu.
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
 
-            let miasta = ["Warszawa", "Kraków", "Wrocław", "Gdańsk", "Poznań", "Łódź"];
-            let output = "Lista miast:\n";
-            for (let i = 0; i < miasta.length; i++) {
-                output += "Linia " + (i + 1) + ": " + miasta[i] + "\n";
-            }
+<script>
+function aktualizujZegar() {
+  var terazPolska = moment().tz("Europe/Warsaw");
+  var godzinyPolska = terazPolska.format('HH');
+  var minutyPolska = terazPolska.format('mm');
+  var sekundyPolska = terazPolska.format('ss');
+  document.getElementById("zegar-polska").innerHTML = godzinyPolska + ":" + minutyPolska + ":" + sekundyPolska;
 
-            let moje_miasto = prompt("Z jakiego miasta pochodzisz?");
-            if (moje_miasto.toLowerCase() === "wrocław") {
-                output += "Brawo! Wygrałeś!\n";
-            } else {
-                output += "Niestety, spróbuj ponownie.\n";
-            }
+  var terazNY = moment().tz("America/New_York");
+  var godzinyNY = terazNY.format('HH');
+  var minutyNY = terazNY.format('mm');
+  var sekundyNY = terazNY.format('ss');
+  document.getElementById("zegar-ny").innerHTML = godzinyNY + ":" + minutyNY + ":" + sekundyNY;
+}
 
-            let imie = prompt("Jak masz na imię?");
-            if (imie.toLowerCase() === "marek") {
-                output += "Czy na pewno? Matka Ci tak zjebała imię?\n";
-            } else {
-                output += "Witaj, " + imie + "!\n";
-            }
+aktualizujZegar(); // Wywołujemy funkcję raz na początku, żeby zegary od razu się wyświetliły
+setInterval(aktualizujZegar, 1000); // Aktualizujemy co sekundę
+</script>
 
-            let wiek = prompt("Ile masz lat?");
-            let wiekInt = parseInt(wiek);
-            if (isNaN(wiekInt)) {
-                output += "Nieprawidłowy wiek.\n";
-            } else {
-                output += "Masz " + wiekInt + " lat.\n";
-            }
-
-            output += "\nKoniec skryptu.";
-            document.getElementById("wynik").textContent = output;
-        });
-    </script>
 </body>
 </html>
